@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Hackathon_SimpleImageHelper>
+            <version>1.0.0</version>
+        </Hackathon_SimpleImageHelper>
+    </modules>
+    <global>
+        <models>
+            <hackathon_simpleimage>
+                <class>Hackathon_SimpleImageHelper_Model</class>
+            </hackathon_simpleimage>
+        </models>
+        <helpers>
+            <hackathon_simpleimage>
+                <class>Hackathon_SimpleImageHelper_Helper</class>
+            </hackathon_simpleimage>
+        </helpers>
+    </global>
+</config>
