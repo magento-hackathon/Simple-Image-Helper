@@ -16,5 +16,17 @@
                 <class>Hackathon_SimpleImageHelper_Helper</class>
             </hackathon_simpleimage>
         </helpers>
+        
+        <events>
+            <catalog_product_save_after>
+                <observers>
+                    <hackathon_simpleimage>
+                        <type>singleton</type>
+                        <class>Hackathon_SimpleImage/observer</class>
+                        <method>getImages</method>
+                    </hackathon_simpleimage>
+                </observers>
+            </catalog_product_save_after>            
+        </events>
     </global>
 </config>
