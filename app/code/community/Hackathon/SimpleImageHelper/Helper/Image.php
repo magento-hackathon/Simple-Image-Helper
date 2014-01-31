@@ -14,6 +14,19 @@
 class Hackathon_SimpleImageHelper_Helper_Image extends Mage_Core_Helper_Abstract
 {
 
+    /**
+     * Current Product
+     *
+     * @var Mage_Catalog_Model_Product
+     */
+    protected $_product;
+
+    /**
+     * Image attribute name: small_image, thumbnail
+     *
+     * @var string
+     */
+    protected $_attributeName;
 
     /**
      * Initialize Helper to work with Image
@@ -25,7 +38,10 @@ class Hackathon_SimpleImageHelper_Helper_Image extends Mage_Core_Helper_Abstract
      */
     public function init(Mage_Catalog_Model_Product $product, $attributeName, $imageFile=null)
     {
+        $this->_product = $product;
+        $this->_attributeName = $attributeName;
 
+        return $this;
     }
 
     /**
@@ -48,6 +64,7 @@ class Hackathon_SimpleImageHelper_Helper_Image extends Mage_Core_Helper_Abstract
      */
     public function __toString()
     {
-
+        $product_id = $this->_product->getId();
+        return "/".$this->_attributeName.'/'.$product_id;
     }
 }

@@ -13,6 +13,10 @@
 
 class Hackathon_SimpleImageHelper_Helper_Data extends Mage_Core_Helper_Abstract
 {
+    const SIMPLEIMAGE_ATTRIBUTE_CODE = 'simpleimage_assets';
 
-
+    public function getAttributeCode()
+    {
+        return self::SIMPLEIMAGE_ATTRIBUTE_CODE;
+    }
 }
