@@ -14,8 +14,6 @@ class Hackathon_SimpleImageHelper_Model_Processor
      */
     protected $_imageHelper = null;
     
-    const ASSET_ATTR         = 'simpleimage_assets';
-    
     const CONFIG_SMALL       = 'small_image';
     const CONFIG_BASE        = 'base_image';//@todo use media size?
     const CONFIG_THUMB       = 'thumbnail';
@@ -35,7 +33,13 @@ class Hackathon_SimpleImageHelper_Model_Processor
         //@todo remove when ready
         ini_set('memory_limit', '256m');
     }
-    
+    /**
+     * @return string
+     */
+    protected function _getAttributeCode()
+    {
+        return Mage::helper('hackathon_simpleimage')->getAttributeCode();
+    }
     /**
      * @todo throw exception if $product->getId() is empty?
      * @param Mage_Catalog_Model_Product|int $product
@@ -92,11 +96,11 @@ class Hackathon_SimpleImageHelper_Model_Processor
         $paths       = array();
         $mediaUrl    = Mage::getBaseUrl('media');
         foreach ($collection as $image) {
-            $this->_imageHelper->init($product, self::ASSET_ATTR, $image->getFile())->resize($mediaWidth, $mediaHeight);
+            $this->_imageHelper->init($product, $this->_getAttributeCode(), $image->getFile())->resize($mediaWidth, $mediaHeight);
             //force generation of image
            $url  = (string)$this->_imageHelper;
            $path = str_replace($mediaUrl, '', $url);
-           $this->_imageHelper->init($product, self::ASSET_ATTR, $image->getFile())->resize($thumbWidth, $thumbHeight);
+           $this->_imageHelper->init($product, $this->_getAttributeCode(), $image->getFile())->resize($thumbWidth, $thumbHeight);
            //force generation of image
            $url        = (string)$this->_imageHelper;
            $thumbPath  = str_replace($mediaUrl, '', $url);
@@ -146,7 +150,7 @@ class Hackathon_SimpleImageHelper_Model_Processor
         $product = $this->_getProduct($product);
         $mediaWidth  = $this->_getImageTypeConfig($type, self::MEASUREMENT_WIDTH);
         $mediaHeight = $this->_getImageTypeConfig($type, self::MEASUREMENT_HEIGHT);
-        $this->_imageHelper->init($product, self::ASSET_ATTR, $product->getData($attribute))->resize($mediaWidth, $mediaHeight);
+        $this->_imageHelper->init($product, $this->_getAttributeCode(), $product->getData($attribute))->resize($mediaWidth, $mediaHeight);
         //force generation of image
         $url = (string)$this->_imageHelper;
         return array('path'=> str_replace(Mage::getBaseUrl('media'), '', $url), 'orig' => $product->getData($attribute));
