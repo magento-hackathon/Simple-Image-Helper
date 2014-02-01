@@ -1,4 +1,12 @@
 <?php
+/**
+ * @category Hackathon
+ * @package  Hackathon_SimpleImageHelper
+ * @author   Florinel Chis <florinel.chis@gmail.com>
+ * @license  Open Software License (OSL 3.0)
+ * @link     http://opensource.org/licenses/osl-3.0.php
+ * @author Rolando Granadino <beeplogic@magenation.com>
+ */
 class Hackathon_SimpleImageHelper_Model_Processor
 {
     /**
@@ -66,7 +74,6 @@ class Hackathon_SimpleImageHelper_Model_Processor
         $baseImage    = $this->generateProductBaseImage($product);
         //generate thumbnail
         $thumbnail    = $this->generateProductThumbnail($product);
-        //save values to: simpleimage_data on product?
         return array(
             'gallery'     => $galleryPaths,
             'site_images' => array(

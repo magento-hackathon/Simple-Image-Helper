@@ -119,3 +119,7 @@ skin/frontend/enterprise
 skin/install/
 var/
 
+.buildpath
+.htaccess
+.htaccess.sample
+.project
