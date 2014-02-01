@@ -16,5 +16,13 @@
                 <class>Hackathon_SimpleImageHelper_Helper</class>
             </hackathon_simpleimage>
         </helpers>
+        <resources>
+            <hackathon_simpleimage_setup>
+                <setup>
+                    <module>Hackathon_SimpleImageHelper</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                </setup>
+            </hackathon_simpleimage_setup>
+        </resources>
     </global>
 </config>
