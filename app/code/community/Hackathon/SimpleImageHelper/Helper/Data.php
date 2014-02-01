@@ -1,11 +1,23 @@
 <?php
+
 /**
- * 
+ * Class Hackathon_SimpleImageHelper_Helper_Data
+ *
+ * @category Hackathon
+ * @package  Hackathon_SimpleImageHelper
+ * @author   Florinel Chis <florinel.chis@gmail.com>
+ * @author   Rolando Granadino <beeplogic@magenation.com>
+ * @license  Open Software License (OSL 3.0)
+ * @link     http://opensource.org/licenses/osl-3.0.php
  */
 class Hackathon_SimpleImageHelper_Helper_Data extends Mage_Core_Helper_Data
 {
     const COLLECTION_PAGE_SIZE = 5000;
-    
+    const SIMPLEIMAGE_ATTRIBUTE_CODE = 'simpleimage_assets';
+
+    /**
+     * loop through all products and generate assets
+     */
     public function generateAllProductAssets()
     {
         /* @var $productCollectionPrototype Mage_Catalog_Model_Resource_Product_Collection */
@@ -34,9 +46,17 @@ class Hackathon_SimpleImageHelper_Helper_Data extends Mage_Core_Helper_Data
                 }
                 $backend->afterLoad($product);
                 $paths = $processor->generateProductImages($product);
-                $actionModel->updateAttributes(array($product->getId()), array('simpleimage_assets' => $this->jsonEncode($paths)), $storeCode);
+                $actionModel->updateAttributes(array($product->getId()), array(self::SIMPLEIMAGE_ATTRIBUTE_CODE => $this->jsonEncode($paths)), $storeCode);
             }
             unset($productCollection);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getAttributeCode()
+    {
+        return self::SIMPLEIMAGE_ATTRIBUTE_CODE;
     }
 }

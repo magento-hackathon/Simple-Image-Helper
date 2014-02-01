@@ -98,19 +98,17 @@ class Hackathon_SimpleImageHelper_Model_Processor
         $thumbWidth  = $this->_getImageTypeConfig(self::CONFIG_MEDIA_THUMB, self::MEASUREMENT_WIDTH);
         $thumbHeight = $this->_getImageTypeConfig(self::CONFIG_MEDIA_THUMB, self::MEASUREMENT_HEIGHT);
         $paths       = array();
+        $mediaUrl    = Mage::getBaseUrl('media');
         foreach ($collection as $image) {
             $this->_imageHelper->init($product, self::ASSET_ATTR, $image->getFile())->resize($mediaWidth, $mediaHeight);
             //force generation of image
-            (string)$this->_imageHelper;
-            //@todo get file path from new helper
-           $model = $this->_reflection->invoke($this->_imageHelper);
-           $path  = $model->getNewFile();
+           $url  = (string)$this->_imageHelper;
+           $path = str_replace($mediaUrl, '', $url);
            $this->_imageHelper->init($product, self::ASSET_ATTR, $image->getFile())->resize($thumbWidth, $thumbHeight);
            //force generation of image
-           (string)$this->_imageHelper;
-           $model = $this->_reflection->invoke($this->_imageHelper);
-           $thumbPath  = $model->getNewFile();
-           $paths[] = array('path' => $path, 'thumb' => $thumbPath);
+           $url        = (string)$this->_imageHelper;
+           $thumbPath  = str_replace($mediaUrl, '', $url);
+           $paths[] = array('path' => $path, 'thumb' => $thumbPath, 'orig' => $image->getFile());
         }
         return $paths;
     }
@@ -158,10 +156,8 @@ class Hackathon_SimpleImageHelper_Model_Processor
         $mediaHeight = $this->_getImageTypeConfig($type, self::MEASUREMENT_HEIGHT);
         $this->_imageHelper->init($product, self::ASSET_ATTR, $product->getData($attribute))->resize($mediaWidth, $mediaHeight);
         //force generation of image
-        (string)$this->_imageHelper;
-        //@todo get file path from new helper
-        $model = $this->_reflection->invoke($this->_imageHelper);
-        return $model->getNewFile();
+        $url = (string)$this->_imageHelper;
+        return array('path'=> str_replace(Mage::getBaseUrl('media'), '', $url), 'orig' => $product->getData($attribute));
     }
     /**
      * @todo pull from config/helper
