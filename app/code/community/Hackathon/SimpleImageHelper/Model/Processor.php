@@ -14,12 +14,6 @@ class Hackathon_SimpleImageHelper_Model_Processor
      */
     protected $_imageHelper = null;
     
-    /**
-     * temporary until we have our custom helper
-     * @var ReflectionMethod
-     */
-    protected $_reflection  = null;
-    
     const ASSET_ATTR         = 'simpleimage_assets';
     
     const CONFIG_SMALL       = 'small_image';
@@ -38,10 +32,8 @@ class Hackathon_SimpleImageHelper_Model_Processor
     {
         $this->_imageHelper = Mage::helper('catalog/image');
         //magento doesn't like cli settings to be -1
+        //@todo remove when ready
         ini_set('memory_limit', '256m');
-        $r = new ReflectionMethod(get_class($this->_imageHelper), '_getModel');
-        $r->setAccessible(true);
-        $this->_reflection = $r;
     }
     
     /**
