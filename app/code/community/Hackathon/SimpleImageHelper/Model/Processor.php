@@ -29,6 +29,8 @@ class Hackathon_SimpleImageHelper_Model_Processor
     public function __construct()
     {
         $this->_imageHelper = Mage::helper('catalog/image');
+        //magento doesn't like cli settings to be -1
+        ini_set('memory_limit', '256m');
         $r = new ReflectionMethod(get_class($this->_imageHelper), '_getModel');
         $r->setAccessible(true);
         $this->_reflection = $r;
@@ -54,42 +56,34 @@ class Hackathon_SimpleImageHelper_Model_Processor
     public function generateProductImages($product)
     {
         $product = $this->_getProduct($product);
-        
-        $configs = $this->_getImagePathConfig();
         /* @todo update to our helper? */
         $helper  = $this->_imageHelper;
-        
         //generate media images and thumbs
-        
-        $collection = $this->getProduct()->getMediaGalleryImages();
-        
+        $galleryPaths = $this->generateGalleryAssets($product);
         //generate product listing
+        $smallImage   = $this->generateProductListing($product);
         //generate base image
+        $baseImage    = $this->generateProductBaseImage($product);
         //generate thumbnail
-        
-        foreach ($configs as $config) {
-            //do we use a fake attribute name to store generated paths
-            //in our own directory?
-            
-//             $image['url'] = $this->getMediaConfig()->getMediaUrl($image['file']);
-//             $image['id'] = isset($image['value_id']) ? $image['value_id'] : null;
-//             $image['path'] = $this->getMediaConfig()->getMediaPath($image['file']);
-//             $images->addItem(new Varien_Object($image));
-            
-            //$helper->init($product, 'sih', );
-        }
-        //save values to: simpleimage_data on product
+        $thumbnail    = $this->generateProductThumbnail($product);
+        //save values to: simpleimage_data on product?
+        return array(
+            'gallery'     => $galleryPaths,
+            'site_images' => array(
+                'thumbnail'   => $thumbnail,
+                'small_image' => $smallImage,
+                'base_image'  => $baseImage
+            )
+        );
     }
     /**
      * 
      * @param Mage_Catalog_Model_Product|int $product
      * @return array
      */
-    public function generateMediaAssets($product)
+    public function generateGalleryAssets($product)
     {
         //@todo remove this, temporary for testing
-        //magento doesn't like cli settings to be -1
-        ini_set('memory_limit', '256m');
         $product     = $this->_getProduct($product);
         $collection  = $product->getMediaGalleryImages();
         $mediaWidth  = $this->_getImageTypeConfig(self::CONFIG_MEDIA, self::MEASUREMENT_WIDTH);
@@ -109,12 +103,59 @@ class Hackathon_SimpleImageHelper_Model_Processor
            (string)$this->_imageHelper;
            $model = $this->_reflection->invoke($this->_imageHelper);
            $thumbPath  = $model->getNewFile();
-           $paths['path'] = $path;
-           $paths['thumb'] = $thumbPath;
+           $paths[] = array('path' => $path, 'thumb' => $thumbPath);
         }
         return $paths;
     }
     
+    /**
+     * generate product list image
+     * @param Mage_Catalog_Model_Product|int $product $product
+     * @return str
+     */
+    public function generateProductListing($product)
+    {
+        return $this->generateProductAttributeImage($product, 'small_image', self::CONFIG_SMALL);
+    }
+    
+    /**
+     * generate product thumbnail image
+     * @param Mage_Catalog_Model_Product|int $product $product
+     * @return str
+     */
+    public function generateProductThumbnail($product)
+    {
+        return $this->generateProductAttributeImage($product, 'thumbnail', self::CONFIG_THUMB);
+    }
+    
+    /**
+     * generate product base image
+     * @param Mage_Catalog_Model_Product|int $product $product
+     * @return str
+     */
+    public function generateProductBaseImage($product)
+    {
+        return $this->generateProductAttributeImage($product, 'image', self::CONFIG_BASE);
+    }
+    
+    /**
+     * generate product image for a given attribute
+     * @param Mage_Catalog_Model_Product|int $product
+     * @param str $attribute
+     * @param str $type
+     */
+    public function generateProductAttributeImage($product, $attribute, $type)
+    {
+        $product = $this->_getProduct($product);
+        $mediaWidth  = $this->_getImageTypeConfig($type, self::MEASUREMENT_WIDTH);
+        $mediaHeight = $this->_getImageTypeConfig($type, self::MEASUREMENT_HEIGHT);
+        $this->_imageHelper->init($product, self::ASSET_ATTR, $product->getData($attribute))->resize($mediaWidth, $mediaHeight);
+        //force generation of image
+        (string)$this->_imageHelper;
+        //@todo get file path from new helper
+        $model = $this->_reflection->invoke($this->_imageHelper);
+        return $model->getNewFile();
+    }
     /**
      * @todo pull from config/helper
      * @todo throw exception if type not found or return some sort of default?
