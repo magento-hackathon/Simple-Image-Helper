@@ -29,6 +29,17 @@
                 </setup>
             </hackathon_simpleimage_setup>
         </resources>
+        <events>
+            <catalog_product_save_after>
+                <observers>
+                    <hackathon_simpleimage>
+                        <type>singleton</type>
+                        <class>hackathon_simpleimage/observer</class>
+                        <method>getImages</method>
+                    </hackathon_simpleimage>
+                </observers>
+            </catalog_product_save_after>
+        </events>
     </global>
     <adminhtml>
         <events>
