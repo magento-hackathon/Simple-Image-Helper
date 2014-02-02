@@ -44,7 +44,7 @@ class Hackathon_SimpleImageHelper_Helper_Image extends Mage_Catalog_Helper_Image
     public function init(Mage_Catalog_Model_Product $product, $attributeName, $imageFile = null)
     {
         $this->_frontendPath = null;
-        if ((Mage::app()->getStore()->isAdmin())) {
+        if ((Mage::app()->getStore()->isAdmin()) || !$this->_dataHelper->isEnabled()) {
             parent::init($product, $attributeName, $imageFile);
         } else {
             $assetPaths = $this->_initProductAssets($product);
