@@ -26,6 +26,7 @@ class Hackathon_SimpleImageHelper_Helper_Image extends Mage_Catalog_Helper_Image
 
     /**
      * setup core data helper
+     * @todo add is enabled flag
      */
     public function __construct()
     {

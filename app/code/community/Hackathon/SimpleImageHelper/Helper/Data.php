@@ -53,6 +53,18 @@ class Hackathon_SimpleImageHelper_Helper_Data extends Mage_Core_Helper_Data
     }
 
     /**
+     * get catalog attribute collection filtered by media_image input
+     * @return Mage_Catalog_Model_Resource_Product_Attribute_Collection
+     */
+    public function getMediaAttributeCollection()
+    {
+        /* @var $attributes Mage_Catalog_Model_Resource_Product_Attribute_Collection */
+        $attributes = Mage::getResourceModel('catalog/product_attribute_collection');
+        $attributes->addFieldToFilter('frontend_input', array('eq' => 'media_image'));
+        return $attributes;
+    }
+
+    /**
      * @return string
      */
     public function getAttributeCode()

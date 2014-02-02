@@ -30,4 +30,33 @@
             </hackathon_simpleimage_setup>
         </resources>
     </global>
+    <adminhtml>
+        <events>
+            <adminhtml_init_system_config>
+                <observers>
+                    <hackathon_simpleimage>
+                        <class>hackathon_simpleimage/observer</class>
+                        <method>initSystemConfig</method>
+                    </hackathon_simpleimage>
+                </observers>
+            </adminhtml_init_system_config>
+        </events>
+    </adminhtml>
+    <default>
+        <catalog>
+            <hackathon_simpleimage>
+                <enabled>1</enabled>
+                <media_width>300</media_width>
+                <media_height>0</media_height>
+                <media_thumb_width>66</media_thumb_width>
+                <media_thumb_height>0</media_thumb_height>
+                <image_width>300</image_width>
+                <image_height>0</image_height>
+                <small_image_width>135</small_image_width>
+                <small_image_height>0</small_image_height>
+                <thumbnail_width>75</thumbnail_width>
+                <thumbnail_height>0</thumbnail_height>
+            </hackathon_simpleimage>
+        </catalog>
+    </default>
 </config>
