@@ -15,6 +15,11 @@
             <hackathon_simpleimage>
                 <class>Hackathon_SimpleImageHelper_Helper</class>
             </hackathon_simpleimage>
+            <catalog>
+                <rewrite>
+                    <image>Hackathon_SimpleImageHelper_Helper_Image</image>
+                </rewrite>
+            </catalog>
         </helpers>
         <resources>
             <hackathon_simpleimage_setup>
