@@ -14,7 +14,68 @@ class Hackathon_SimpleImageHelper_Helper_Data extends Mage_Core_Helper_Data
 {
     const COLLECTION_PAGE_SIZE = 5000;
     const SIMPLEIMAGE_ATTRIBUTE_CODE = 'simpleimage_assets';
+    const CONFIG_PATH_ENABLED  = 'catalog/hackathon_simpleimage/enabled';
+    const CONFIG_PATH_PREFIX   = 'catalog/hackathon_simpleimage';
+    const CONFIG_TYPE_WIDTH    = 'width';
+    const CONFIG_TYPE_HEIGHT   = 'height';
+    /**
+     * core magento image attributes
+     */
+    const ATTR_SMALL    = 'small_image';
+    const ATTR_IMAGE    = 'image';
+    const ATTR_THUMB    = 'thumbnail';
+    /**
+     * media/gallery attributes
+     */
+    const ATTR_MEDIA        = 'media';
+    const ATTR_MEDIA_THUMB  = 'media_thumb';
 
+    /**
+     * @var boolean
+     */
+    protected $_enabled = null;
+    protected $_imageConfig = null;
+    
+    /**
+     * check whether image helper is enabled
+     * @return boolean
+     */
+    public function isEnabled()
+    {
+        if ($this->_enabled === nul) {
+            $this->_enabled = Mage::getStoreConfigFlag(self::CONFIG_PATH_ENABLED);
+        }
+        return $this->_enabled;
+    }
+
+    /**
+     * get configuation for $type for a given $attribute
+     * @param str $attribute
+     * @param str $suffix
+     * @return str|null Returns null if no value found
+     */
+    public function getImageConfig($attribute, $type)
+    {
+        if ($this->_imageConfig === null) {
+            $config = Mage::getStoreConfig(self::CONFIG_PATH_PREFIX);
+            $this->_imageConfig = array();
+            foreach ($config as $key => $value) {
+                //all image attributes will be prefixed with 'sih'
+                if (substr($key, 0,4) == 'sih_') {
+                    if (!$value) {//if is falsy convert to null
+                        $value = null;
+                    }
+                    $this->_imageConfig[$key] = $value;
+                }
+            }
+        }
+        $key = 'sih_'.$attribute.'_'.$suffix;
+        if (isset($this->_imageConfig[$key])) {
+            return $this->_imageConfig[$key];
+        }
+        return null;
+    }
+    
     /**
      * loop through all products and generate assets
      */

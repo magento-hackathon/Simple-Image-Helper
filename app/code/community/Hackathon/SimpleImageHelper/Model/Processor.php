@@ -13,33 +13,24 @@ class Hackathon_SimpleImageHelper_Model_Processor
      * @var Mage_Catalog_Helper_Image
      */
     protected $_imageHelper = null;
-    
-    const CONFIG_SMALL       = 'small_image';
-    const CONFIG_BASE        = 'base_image';//@todo use media size?
-    const CONFIG_THUMB       = 'thumbnail';
-    const CONFIG_MEDIA_THUMB = 'media_thumb';
-    const CONFIG_MEDIA       = 'media';
-    
-    const MEASUREMENT_WIDTH  = 'width';
-    const MEASUREMENT_HEIGHT = 'height';
-    
+
+    /**
+     * @var Hackathon_SimpleImageHelper_Helper_Data
+     */
+    protected $_helper  = null;
+
     /**
      * setup image helper
      */
     public function __construct()
     {
         $this->_imageHelper = Mage::helper('catalog/image');
+        $this->_helper      = Mage::helper('hackathon_simpleimage');
         //magento doesn't like cli settings to be -1
         //@todo remove when ready
         ini_set('memory_limit', '256m');
     }
-    /**
-     * @return string
-     */
-    protected function _getAttributeCode()
-    {
-        return Mage::helper('hackathon_simpleimage')->getAttributeCode();
-    }
+    
     /**
      * @todo throw exception if $product->getId() is empty?
      * @param Mage_Catalog_Model_Product|int $product
@@ -54,13 +45,11 @@ class Hackathon_SimpleImageHelper_Model_Processor
     }
     
     /**
-     * 
      * @param Mage_Catalog_Model_Product|int $product
      */
     public function generateProductImages($product)
     {
         $product = $this->_getProduct($product);
-        /* @todo update to our helper? */
         $helper  = $this->_imageHelper;
         //generate media images and thumbs
         $galleryPaths = $this->generateGalleryAssets($product);
@@ -79,28 +68,28 @@ class Hackathon_SimpleImageHelper_Model_Processor
             )
         );
     }
+
     /**
-     * 
      * @param Mage_Catalog_Model_Product|int $product
      * @return array
      */
     public function generateGalleryAssets($product)
     {
-        //@todo remove this, temporary for testing
         $product     = $this->_getProduct($product);
         $collection  = $product->getMediaGalleryImages();
-        $mediaWidth  = $this->_getImageTypeConfig(self::CONFIG_MEDIA, self::MEASUREMENT_WIDTH);
-        $mediaHeight = $this->_getImageTypeConfig(self::CONFIG_MEDIA, self::MEASUREMENT_HEIGHT);
-        $thumbWidth  = $this->_getImageTypeConfig(self::CONFIG_MEDIA_THUMB, self::MEASUREMENT_WIDTH);
-        $thumbHeight = $this->_getImageTypeConfig(self::CONFIG_MEDIA_THUMB, self::MEASUREMENT_HEIGHT);
-        $paths       = array();
-        $mediaUrl    = Mage::getBaseUrl('media');
+        
+        $mediaWidth   = $this->_helper->getImageConfig(Hackathon_SimpleImageHelper_Helper_Data::ATTR_MEDIA, Hackathon_SimpleImageHelper_Helper_Data::CONFIG_TYPE_WIDTH);
+        $mediaHeight  = $this->_helper->getImageConfig(Hackathon_SimpleImageHelper_Helper_Data::ATTR_MEDIA, Hackathon_SimpleImageHelper_Helper_Data::CONFIG_TYPE_HEIGHT);
+        $thumbWidth   = $this->_helper->getImageConfig(Hackathon_SimpleImageHelper_Helper_Data::ATTR_MEDIA_THUMB, Hackathon_SimpleImageHelper_Helper_Data::CONFIG_TYPE_WIDTH);
+        $thumbHeight  = $this->_helper->getImageConfig(Hackathon_SimpleImageHelper_Helper_Data::ATTR_MEDIA_THUMB, Hackathon_SimpleImageHelper_Helper_Data::CONFIG_TYPE_HEIGHT);
+        $paths        = array();
+        $mediaUrl     = Mage::getBaseUrl('media');
         foreach ($collection as $image) {
-            $this->_imageHelper->init($product, $this->_getAttributeCode(), $image->getFile())->resize($mediaWidth, $mediaHeight);
+            $this->_imageHelper->init($product, $this->_helper->getAttributeCode(), $image->getFile())->resize($mediaWidth, $mediaHeight);
             //force generation of image
            $url  = (string)$this->_imageHelper;
            $path = str_replace($mediaUrl, '', $url);
-           $this->_imageHelper->init($product, $this->_getAttributeCode(), $image->getFile())->resize($thumbWidth, $thumbHeight);
+           $this->_imageHelper->init($product, $this->_helper->getAttributeCode(), $image->getFile())->resize($thumbWidth, $thumbHeight);
            //force generation of image
            $url        = (string)$this->_imageHelper;
            $thumbPath  = str_replace($mediaUrl, '', $url);
@@ -116,7 +105,7 @@ class Hackathon_SimpleImageHelper_Model_Processor
      */
     public function generateProductListing($product)
     {
-        return $this->generateProductAttributeImage($product, 'small_image', self::CONFIG_SMALL);
+        return $this->generateProductAttributeImage($product, Hackathon_SimpleImageHelper_Helper_Data::ATTR_SMALL);
     }
     
     /**
@@ -126,7 +115,7 @@ class Hackathon_SimpleImageHelper_Model_Processor
      */
     public function generateProductThumbnail($product)
     {
-        return $this->generateProductAttributeImage($product, 'thumbnail', self::CONFIG_THUMB);
+        return $this->generateProductAttributeImage($product, Hackathon_SimpleImageHelper_Helper_Data::ATTR_THUMB);
     }
     
     /**
@@ -136,7 +125,7 @@ class Hackathon_SimpleImageHelper_Model_Processor
      */
     public function generateProductBaseImage($product)
     {
-        return $this->generateProductAttributeImage($product, 'image', self::CONFIG_BASE);
+        return $this->generateProductAttributeImage($product, Hackathon_SimpleImageHelper_Helper_Data::ATTR_IMAGE);
     }
     
     /**
@@ -145,30 +134,15 @@ class Hackathon_SimpleImageHelper_Model_Processor
      * @param str $attribute
      * @param str $type
      */
-    public function generateProductAttributeImage($product, $attribute, $type)
+    public function generateProductAttributeImage($product, $attribute)
     {
         $product = $this->_getProduct($product);
-        $mediaWidth  = $this->_getImageTypeConfig($type, self::MEASUREMENT_WIDTH);
-        $mediaHeight = $this->_getImageTypeConfig($type, self::MEASUREMENT_HEIGHT);
-        $this->_imageHelper->init($product, $this->_getAttributeCode(), $product->getData($attribute))->resize($mediaWidth, $mediaHeight);
+        $mediaWidth  = $this->_helper->getImageConfig($attribute, Hackathon_SimpleImageHelper_Helper_Data::CONFIG_TYPE_WIDTH);
+        $mediaHeight = $this->_helper->getImageConfig($attribute, Hackathon_SimpleImageHelper_Helper_Data::CONFIG_TYPE_HEIGHT);
+        
+        $this->_imageHelper->init($product, $this->_helper->getAttributeCode(), $product->getData($attribute))->resize($mediaWidth, $mediaHeight);
         //force generation of image
         $url = (string)$this->_imageHelper;
         return array('path'=> str_replace(Mage::getBaseUrl('media'), '', $url), 'orig' => $product->getData($attribute));
-    }
-    /**
-     * @todo pull from config/helper
-     * @todo throw exception if type not found or return some sort of default?
-     * @return 
-     */
-    protected function _getImageTypeConfig($type, $measurement)
-    {
-        $config = array(
-            self::CONFIG_SMALL => array(self::MEASUREMENT_WIDTH => 135, self::MEASUREMENT_HEIGHT => null),
-            self::CONFIG_BASE  => array(self::MEASUREMENT_WIDTH => 300, self::MEASUREMENT_HEIGHT => null),//reuse media size?
-            self::CONFIG_THUMB   => array(self::MEASUREMENT_WIDTH => 75, self::MEASUREMENT_HEIGHT => null),
-            self::CONFIG_MEDIA_THUMB => array(self::MEASUREMENT_WIDTH => 66, self::MEASUREMENT_HEIGHT => null),
-            self::CONFIG_MEDIA       => array(self::MEASUREMENT_WIDTH => 300, self::MEASUREMENT_HEIGHT => null)
-        );
-        return $config[$type][$measurement];
     }
 }
