@@ -21,7 +21,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </enabled>
-                        <media_width>
+                        <sih_media_width>
                             <label>Media Image Width</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>50</sort_order>
@@ -29,8 +29,8 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                             <validate>required-entry</validate>
-                        </media_width>
-                        <media_height>
+                        </sih_media_width>
+                        <sih_media_height>
                             <label>Media Image Height</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>51</sort_order>
@@ -38,8 +38,8 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                             <validate>required-entry</validate>
-                        </media_height>
-                        <media_thumb_width>
+                        </sih_media_height>
+                        <sih_media_thumb_width>
                             <label>Media Thumbnail Width</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>52</sort_order>
@@ -47,8 +47,8 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                             <validate>required-entry</validate>
-                        </media_thumb_width>
-                        <media_thumb_height>
+                        </sih_media_thumb_width>
+                        <sih_media_thumb_height>
                             <label>Media Thumbnail Height</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>53</sort_order>
@@ -56,7 +56,7 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                             <validate>required-entry</validate>
-                        </media_thumb_height>
+                        </sih_media_thumb_height>
                     </fields>
                 </hackathon_simpleimage>
             </groups>

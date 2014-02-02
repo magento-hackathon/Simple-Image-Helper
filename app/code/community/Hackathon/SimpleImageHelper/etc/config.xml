@@ -46,16 +46,16 @@
         <catalog>
             <hackathon_simpleimage>
                 <enabled>1</enabled>
-                <media_width>300</media_width>
-                <media_height>0</media_height>
-                <media_thumb_width>66</media_thumb_width>
-                <media_thumb_height>0</media_thumb_height>
-                <image_width>300</image_width>
-                <image_height>0</image_height>
-                <small_image_width>135</small_image_width>
-                <small_image_height>0</small_image_height>
-                <thumbnail_width>75</thumbnail_width>
-                <thumbnail_height>0</thumbnail_height>
+                <sih_media_width>300</sih_media_width>
+                <sih_media_height>0</sih_media_height>
+                <sih_media_thumb_width>66</sih_media_thumb_width>
+                <sih_media_thumb_height>0</sih_media_thumb_height>
+                <sih_image_width>300</sih_image_width>
+                <sih_image_height>0</sih_image_height>
+                <sih_small_image_width>135</sih_small_image_width>
+                <sih_small_image_height>0</sih_small_image_height>
+                <sih_thumbnail_width>75</sih_thumbnail_width>
+                <sih_thumbnail_height>0</sih_thumbnail_height>
             </hackathon_simpleimage>
         </catalog>
     </default>

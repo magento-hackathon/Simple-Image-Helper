@@ -24,7 +24,7 @@ class Hackathon_SimpleImageHelper_Model_Observer
         $i      = 1;
         foreach ($helper->getMediaAttributeCollection() as $attribute) {
             /* @var $attribute Mage_Catalog_Model_Resource_Eav_Attribute */
-            $base = $fields->addChild($attribute->getAttributeCode().'_width');
+            $base = $fields->addChild('sih_'.$attribute->getAttributeCode().'_width');
             $base->addChild('label', $attribute->getFrontendLabel().' '.$helper->__('Width'));
             $base->addChild('frontend_type', 'text');
             $base->addChild('sort_order', (100 * $i));
@@ -32,7 +32,7 @@ class Hackathon_SimpleImageHelper_Model_Observer
             $base->addChild('show_in_website', 0);
             $base->addChild('show_in_store', 0);
             
-            $base = $fields->addChild($attribute->getAttributeCode().'_height');
+            $base = $fields->addChild('sih_'.$attribute->getAttributeCode().'_height');
             $base->addChild('label', $attribute->getFrontendLabel().' '.$helper->__('Height'));
             $base->addChild('frontend_type', 'text');
             $base->addChild('sort_order', (101*$i));
