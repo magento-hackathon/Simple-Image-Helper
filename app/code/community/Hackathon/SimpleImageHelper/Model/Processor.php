@@ -53,20 +53,16 @@ class Hackathon_SimpleImageHelper_Model_Processor
         $helper  = $this->_imageHelper;
         //generate media images and thumbs
         $galleryPaths = $this->generateGalleryAssets($product);
-        //generate product listing
-        $smallImage   = $this->generateProductListing($product);
-        //generate base image
-        $baseImage    = $this->generateProductBaseImage($product);
-        //generate thumbnail
-        $thumbnail    = $this->generateProductThumbnail($product);
-        return array(
+        $return       = array(
             'gallery'     => $galleryPaths,
-            'site_images' => array(
-                'thumbnail'   => $thumbnail,
-                'small_image' => $smallImage,
-                'base_image'  => $baseImage
-            )
+            'site_images' => array()
         );
+        $attributes = $this->_helper->getMediaAttributeCollection();
+        foreach ($attributes as $attribute) {
+            $code = $attribute->getAttributeCode();
+            $return['site_images'][$code] = $this->generateProductAttributeImage($product, $code);
+        }
+        return $return;
     }
 
     /**
@@ -96,36 +92,6 @@ class Hackathon_SimpleImageHelper_Model_Processor
            $paths[] = array('path' => $path, 'thumb' => $thumbPath, 'orig' => $image->getFile());
         }
         return $paths;
-    }
-    
-    /**
-     * generate product list image
-     * @param Mage_Catalog_Model_Product|int $product $product
-     * @return str
-     */
-    public function generateProductListing($product)
-    {
-        return $this->generateProductAttributeImage($product, Hackathon_SimpleImageHelper_Helper_Data::ATTR_SMALL);
-    }
-    
-    /**
-     * generate product thumbnail image
-     * @param Mage_Catalog_Model_Product|int $product $product
-     * @return str
-     */
-    public function generateProductThumbnail($product)
-    {
-        return $this->generateProductAttributeImage($product, Hackathon_SimpleImageHelper_Helper_Data::ATTR_THUMB);
-    }
-    
-    /**
-     * generate product base image
-     * @param Mage_Catalog_Model_Product|int $product $product
-     * @return str
-     */
-    public function generateProductBaseImage($product)
-    {
-        return $this->generateProductAttributeImage($product, Hackathon_SimpleImageHelper_Helper_Data::ATTR_IMAGE);
     }
     
     /**

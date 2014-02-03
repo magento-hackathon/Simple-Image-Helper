@@ -42,14 +42,47 @@ class Hackathon_SimpleImageHelper_Model_Observer
             $i++;
         }
     }
-    public function getImages(Varien_Event_Observer $observer)
-    {
-        $product = $observer->getData('product');        
-        $images  = $product->getMediaGallery();
 
-        foreach ($images as $image) {
-            foreach ($image as $img) {
-                // make call here to helper to resize image based on file $img['file];
+    /**
+     * check for media gallery changes
+     * @param Varien_Event_Observer $event
+     */
+    public function handleProductSave(Varien_Event_Observer $event)
+    {
+        /* @var $product Mage_Catalog_Model_Product */
+        $product = $event->getData('product');
+        if ($product instanceof Mage_Catalog_Model_Product) {
+            //handle media gallery changes
+            $newMedia = $product->getData('media_gallery');
+            $oldMedia = $product->getOrigData('media_gallery');
+            $newFiles = array();
+            $oldFiles = array();
+
+            if (is_array($newMedia)) {
+                foreach ($newMedia['images'] as $imageInfo) {
+                    $newFiles[] = $imageInfo['file'];
+                }
+                if (is_array($oldMedia)) {
+                    foreach ($oldMedia['images'] as $imageInfo) {
+                        $oldFiles[] = $imageInfo['file'];
+                    }
+                }
+            }
+
+            /* @var $helper Hackathon_SimpleImageHelper_Helper_Data */
+            $helper           = Mage::helper('hackathon_simpleimage');
+            $attributeChanged = false;
+            foreach ($helper->getMediaAttributeCollection() as $attribute) {
+                if ($product->dataHasChangedFor($attribute->getAttributeCode())) {
+                    $attributeChanged = true;
+                    break;
+                }
+            }
+
+            if ($attributeChanged || array_diff($newFiles, $oldFiles)) {
+                //@todo this is where we check for queue support or implement our own
+                //for proof of concept we'll just call the process manually
+                $helper->generateProductAssets($product);
             }
         }
     }

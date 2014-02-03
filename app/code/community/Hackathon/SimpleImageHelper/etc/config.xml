@@ -35,7 +35,7 @@
                     <hackathon_simpleimage>
                         <type>singleton</type>
                         <class>hackathon_simpleimage/observer</class>
-                        <method>getImages</method>
+                        <method>handleProductSave</method>
                     </hackathon_simpleimage>
                 </observers>
             </catalog_product_save_after>

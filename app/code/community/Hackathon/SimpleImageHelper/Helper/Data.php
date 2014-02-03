@@ -18,12 +18,7 @@ class Hackathon_SimpleImageHelper_Helper_Data extends Mage_Core_Helper_Data
     const CONFIG_PATH_PREFIX   = 'catalog/hackathon_simpleimage';
     const CONFIG_TYPE_WIDTH    = 'width';
     const CONFIG_TYPE_HEIGHT   = 'height';
-    /**
-     * core magento image attributes
-     */
-    const ATTR_SMALL    = 'small_image';
-    const ATTR_IMAGE    = 'image';
-    const ATTR_THUMB    = 'thumbnail';
+
     /**
      * media/gallery attributes
      */
@@ -34,15 +29,23 @@ class Hackathon_SimpleImageHelper_Helper_Data extends Mage_Core_Helper_Data
      * @var boolean
      */
     protected $_enabled = null;
+    /**
+     * image configuration cache
+     * @var array
+     */
     protected $_imageConfig = null;
-    
+    /**
+     * attribute collection model
+     * @var Mage_Catalog_Model_Resource_Product_Attribute_Collection
+     */
+    protected $_attributeCollection = null;
     /**
      * check whether image helper is enabled
      * @return boolean
      */
     public function isEnabled()
     {
-        if ($this->_enabled === nul) {
+        if ($this->_enabled === null) {
             $this->_enabled = Mage::getStoreConfigFlag(self::CONFIG_PATH_ENABLED);
         }
         return $this->_enabled;
@@ -86,12 +89,7 @@ class Hackathon_SimpleImageHelper_Helper_Data extends Mage_Core_Helper_Data
         $productCollectionPrototype->setPageSize(self::COLLECTION_PAGE_SIZE);
         $pageNumbers = $productCollectionPrototype->getLastPageNumber();
         unset($productCollectionPrototype);
-        /* @var $processor Hackathon_SimpleImageHelper_Model_Processor */
-        $processor            = Mage::getModel('hackathon_simpleimage/processor');
         $backend              = null;
-        /* @var $actionModel Mage_Catalog_Model_Product_Action */
-        $actionModel          = Mage::getSingleton('catalog/product_action');
-        $storeCode            = Mage::app()->getStore()->getCode();
         for ($i = 1; $i <= $pageNumbers; $i++) {
             /* @var $productCollection Mage_Catalog_Model_Resource_Product_Collection */
             $productCollection = Mage::getResourceModel('catalog/product_collection');
@@ -106,11 +104,26 @@ class Hackathon_SimpleImageHelper_Helper_Data extends Mage_Core_Helper_Data
                     $backend       = $mediaGallery->getBackend();
                 }
                 $backend->afterLoad($product);
-                $paths = $processor->generateProductImages($product);
-                $actionModel->updateAttributes(array($product->getId()), array(self::SIMPLEIMAGE_ATTRIBUTE_CODE => $this->jsonEncode($paths)), $storeCode);
+                $this->generateProductAssets($product);
             }
             unset($productCollection);
         }
+    }
+
+    /**
+     * generate product images and update assets attribute value
+     * @param Mage_Catalog_Model_Product $product
+     */
+    public function generateProductAssets(Mage_Catalog_Model_Product $product)
+    {
+        /* @var $processor Hackathon_SimpleImageHelper_Model_Processor */
+        $processor            = Mage::getSingleton('hackathon_simpleimage/processor');
+        $paths                = $processor->generateProductImages($product);
+        /* @var $actionModel Mage_Catalog_Model_Product_Action */
+        $actionModel          = Mage::getSingleton('catalog/product_action');
+        $storeCode            = Mage::app()->getStore()->getCode();
+        $paths                = $processor->generateProductImages($product);
+        $actionModel->updateAttributes(array($product->getId()), array(self::SIMPLEIMAGE_ATTRIBUTE_CODE => $this->jsonEncode($paths)), $storeCode);
     }
 
     /**
@@ -119,10 +132,13 @@ class Hackathon_SimpleImageHelper_Helper_Data extends Mage_Core_Helper_Data
      */
     public function getMediaAttributeCollection()
     {
-        /* @var $attributes Mage_Catalog_Model_Resource_Product_Attribute_Collection */
-        $attributes = Mage::getResourceModel('catalog/product_attribute_collection');
-        $attributes->addFieldToFilter('frontend_input', array('eq' => 'media_image'));
-        return $attributes;
+        if (!$this->_attributeCollection) {
+            /* @var $attributes Mage_Catalog_Model_Resource_Product_Attribute_Collection */
+            $attributes = Mage::getResourceModel('catalog/product_attribute_collection');
+            $attributes->addFieldToFilter('frontend_input', array('eq' => 'media_image'));
+            $this->_attributeCollection = $attributes;
+        }
+        return $this->_attributeCollection;
     }
 
     /**
