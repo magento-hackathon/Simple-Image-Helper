@@ -2,14 +2,23 @@
 <config>
     <modules>
         <Hackathon_SimpleImageHelper>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
         </Hackathon_SimpleImageHelper>
     </modules>
     <global>
         <models>
-            <hackathon_simpleimage>
+            <simpleimage>
                 <class>Hackathon_SimpleImageHelper_Model</class>
-            </hackathon_simpleimage>
+                <resourceModel>simpleimage_mysql4</resourceModel>
+            </simpleimage>
+            <simpleimage_mysql4>
+                <class>Hackathon_SimpleImageHelper_Model_Mysql4</class>
+                <entities>
+                    <simpleimage>
+                        <table>hackathon_simpleimage</table>
+                    </simpleimage>
+                </entities>
+            </simpleimage_mysql4>
         </models>
         <helpers>
             <hackathon_simpleimage>
@@ -28,6 +37,17 @@
                     <class>Mage_Catalog_Model_Resource_Setup</class>
                 </setup>
             </hackathon_simpleimage_setup>
+
+            <hackathon_simpleimage_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </hackathon_simpleimage_read>
+            <hackathon_simpleimage_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </hackathon_simpleimage_write>
         </resources>
         <events>
             <catalog_product_save_after>

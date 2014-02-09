@@ -82,6 +82,10 @@ class Hackathon_SimpleImageHelper_Model_Observer
             if ($attributeChanged || array_diff($newFiles, $oldFiles)) {
                 //@todo this is where we check for queue support or implement our own
                 //for proof of concept we'll just call the process manually
+                $model = Mage::getModel('simpleimage/simpleimage');
+                $model->setData('product_id', $product->getId());
+                $model->save();
+
                 $helper->generateProductAssets($product);
             }
         }
