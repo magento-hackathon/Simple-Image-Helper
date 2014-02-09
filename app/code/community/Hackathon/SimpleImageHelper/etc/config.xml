@@ -61,6 +61,19 @@
             </catalog_product_save_after>
         </events>
     </global>
+
+    <crontab>
+        <jobs>
+            <hackathon_simpleimage>
+                <schedule><cron_expr>*/10 * * * *</cron_expr></schedule>
+                <run>
+                    <model>hackathon_simpleimage/crontab::process</model>
+                </run>
+            </hackathon_simpleimage>
+        </jobs>
+    </crontab>
+
+
     <adminhtml>
         <events>
             <adminhtml_init_system_config>
