@@ -9,16 +9,16 @@
         <models>
             <simpleimage>
                 <class>Hackathon_SimpleImageHelper_Model</class>
-                <resourceModel>simpleimage_mysql4</resourceModel>
+                <resourceModel>simpleimage_resource</resourceModel>
             </simpleimage>
-            <simpleimage_mysql4>
-                <class>Hackathon_SimpleImageHelper_Model_Mysql4</class>
+            <simpleimage_resource>
+                <class>Hackathon_SimpleImageHelper_Model_Resource</class>
                 <entities>
                     <simpleimage>
                         <table>hackathon_simpleimage</table>
                     </simpleimage>
                 </entities>
-            </simpleimage_mysql4>
+            </simpleimage_resource>
         </models>
         <helpers>
             <hackathon_simpleimage>
