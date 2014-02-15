@@ -12,14 +12,22 @@
 $installer = $this;
 $installer->startSetup();
 
-$installer->run("
--- DROP TABLE IF EXISTS {$this->getTable('hackathon_simpleimage')};
-CREATE TABLE {$this->getTable('hackathon_simpleimage')} (
-  `imagehelper_id` int(11) unsigned NOT NULL auto_increment,
-  `product_id` int(11) NOT NULL default '0',
-  `created_time` datetime NULL,
-  `update_time` datetime NULL,
-  PRIMARY KEY (`imagehelper_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+$table = $installer->getConnection()->newTable($installer->getTable('hackathon_simpleimage'))
+    ->addColumn('imagehelper_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+        'unsigned' => true,
+        'nullable' => false,
+        'primary' => true,
+        'identity' => true,
+    ), 'Image Helper ID')
+    ->addColumn('product_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+        'nullable' => false,
+    ), 'Product ID')
+    ->addColumn('created_time', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+    ), 'Created Date')
+    ->addColumn('update_time', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
+    ), 'Updated Time')
+    ->setComment('Magento Hackaton simple image helper CL table');
+$installer->getConnection()->createTable($table);
+
 
 $installer->endSetup();
