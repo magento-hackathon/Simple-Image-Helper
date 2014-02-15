@@ -86,7 +86,7 @@ class Hackathon_SimpleImageHelper_Model_Observer
                 $model->setData('product_id', $product->getId());
                 $model->save();
 
-                $helper->generateProductAssets($product);
+                //$helper->generateProductAssets($product);
             }
         }
     }

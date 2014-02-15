@@ -67,7 +67,7 @@
             <hackathon_simpleimage>
                 <schedule><cron_expr>*/10 * * * *</cron_expr></schedule>
                 <run>
-                    <model>hackathon_simpleimage/crontab::process</model>
+                    <model>simpleimage/crontab::process</model>
                 </run>
             </hackathon_simpleimage>
         </jobs>
