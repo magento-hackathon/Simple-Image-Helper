@@ -7,10 +7,10 @@
     </modules>
     <global>
         <models>
-            <simpleimage>
+            <hackathon_simpleimage>
                 <class>Hackathon_SimpleImageHelper_Model</class>
                 <resourceModel>simpleimage_resource</resourceModel>
-            </simpleimage>
+            </hackathon_simpleimage>
             <simpleimage_resource>
                 <class>Hackathon_SimpleImageHelper_Model_Resource</class>
                 <entities>

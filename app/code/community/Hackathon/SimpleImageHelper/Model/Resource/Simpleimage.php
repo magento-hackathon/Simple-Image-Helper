@@ -3,6 +3,6 @@ class Hackathon_SimpleImageHelper_Model_Resource_Simpleimage extends Mage_Core_M
 {
     public function _construct()
     {
-        $this->_init('simpleimage/simpleimage', 'imagehelper_id');
+        $this->_init('hackathon_simpleimage/simpleimage', 'imagehelper_id');
     }
 }

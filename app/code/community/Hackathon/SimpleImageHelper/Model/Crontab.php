@@ -6,19 +6,28 @@ class Hackathon_SimpleImageHelper_Model_Crontab
      */
     public function process()
     {
-        $model = Mage::getModel('simpleimage/simpleimage')->getCollection();
+        $model = Mage::getModel('hackathon_simpleimage/simpleimage')->getCollection();
 
-        if ($model) {
-            Mage::log('[Simple Image Helper][Info] Processing Image Files');
-            foreach ($model as $product) {
-                Mage::log('[Simple Image Helper][Debug] Processing Image: ' . $product->getData('product_id'));
-                Mage::getModel('simpleimage/processor')->generateGalleryAssets($product->getData('product_id'));
+        foreach ($model as $product) {
+            $this->_processImage($product);
+        }
+    }
 
-                $imageHelper = Mage::getModel('simpleimage/simpleimage')->load($product->getData('imagehelper_id'));
-                $imageHelper->delete();
-            }
-        } else {
-            Mage::log('[Simple Image Helper][Info] No images to process');
+    /**
+     * Call process model to generate product assets.
+     * Once assets are generated delete product from change log table
+     *
+     * @param $product
+     */
+    private function _processImage($product)
+    {
+        Mage::getModel('hackathon_simpleimage/processor')->generateGalleryAssets($product->getData('product_id'));
+
+        try {
+            $imageHelper = Mage::getModel('hackathon_simpleimage/simpleimage')->load($product->getData('imagehelper_id'));
+            $imageHelper->delete();
+        } catch (Exception $e)  {
+            Mage::log("[Error] Unable to delete product: $product->getData('product_id') from process table");
         }
     }
 }

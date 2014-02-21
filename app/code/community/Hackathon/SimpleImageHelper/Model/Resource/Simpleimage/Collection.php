@@ -3,6 +3,6 @@ class Hackathon_SimpleImageHelper_Model_Resource_Simpleimage_Collection extends 
 {
     public function _construct()
     {
-        $this->_init('simpleimage/simpleimage');
+        $this->_init('hackathon_simpleimage/simpleimage');
     }
 }

@@ -4,6 +4,6 @@ class Hackathon_SimpleImageHelper_Model_Simpleimage extends Mage_Core_Model_Abst
     public function __construct()
     {
         parent::_construct();
-        $this->_init('simpleimage/simpleimage');
+        $this->_init('hackathon_simpleimage/simpleimage');
     }
 }
