@@ -2,14 +2,23 @@
 <config>
     <modules>
         <Hackathon_SimpleImageHelper>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
         </Hackathon_SimpleImageHelper>
     </modules>
     <global>
         <models>
             <hackathon_simpleimage>
                 <class>Hackathon_SimpleImageHelper_Model</class>
+                <resourceModel>simpleimage_resource</resourceModel>
             </hackathon_simpleimage>
+            <simpleimage_resource>
+                <class>Hackathon_SimpleImageHelper_Model_Resource</class>
+                <entities>
+                    <simpleimage>
+                        <table>hackathon_simpleimage</table>
+                    </simpleimage>
+                </entities>
+            </simpleimage_resource>
         </models>
         <helpers>
             <hackathon_simpleimage>
@@ -28,6 +37,17 @@
                     <class>Mage_Catalog_Model_Resource_Setup</class>
                 </setup>
             </hackathon_simpleimage_setup>
+
+            <hackathon_simpleimage_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </hackathon_simpleimage_read>
+            <hackathon_simpleimage_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </hackathon_simpleimage_write>
         </resources>
         <events>
             <catalog_product_save_after>
@@ -41,6 +61,19 @@
             </catalog_product_save_after>
         </events>
     </global>
+
+    <crontab>
+        <jobs>
+            <hackathon_simpleimage>
+                <schedule><cron_expr>*/10 * * * *</cron_expr></schedule>
+                <run>
+                    <model>simpleimage/crontab::process</model>
+                </run>
+            </hackathon_simpleimage>
+        </jobs>
+    </crontab>
+
+
     <adminhtml>
         <events>
             <adminhtml_init_system_config>

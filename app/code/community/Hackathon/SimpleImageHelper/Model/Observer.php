@@ -70,7 +70,7 @@ class Hackathon_SimpleImageHelper_Model_Observer
             }
 
             /* @var $helper Hackathon_SimpleImageHelper_Helper_Data */
-            $helper           = Mage::helper('hackathon_simpleimage');
+            $helper = Mage::helper('hackathon_simpleimage');
             $attributeChanged = false;
             foreach ($helper->getMediaAttributeCollection() as $attribute) {
                 if ($product->dataHasChangedFor($attribute->getAttributeCode())) {
@@ -82,7 +82,11 @@ class Hackathon_SimpleImageHelper_Model_Observer
             if ($attributeChanged || array_diff($newFiles, $oldFiles)) {
                 //@todo this is where we check for queue support or implement our own
                 //for proof of concept we'll just call the process manually
-                $helper->generateProductAssets($product);
+                $model = Mage::getModel('hackathon_simpleimage/simpleimage');
+                $model->setData('product_id', $product->getId());
+                $model->save();
+
+                //$helper->generateProductAssets($product);
             }
         }
     }
