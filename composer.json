@@ -1,0 +1,6 @@
+{
+    "name": "magento-hackathon/simple-image-helper",
+    "type": "magento-module",
+    "license":"OSL-3.0",
+    "description": "Lightweight image helper - remove image business logic from template files"
+}
