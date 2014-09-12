@@ -3,4 +3,7 @@
     "type": "magento-module",
     "license":"OSL-3.0",
     "description": "Lightweight image helper - remove image business logic from template files"
+    "suggest": {
+    "magento-hackathon/magento-composer-installer": "Allows to manage this package as a dependency"
+    }
 }
