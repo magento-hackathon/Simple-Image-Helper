@@ -57,7 +57,7 @@ class Hackathon_SimpleImageHelper_Helper_Data extends Mage_Core_Helper_Data
      * @param str $suffix
      * @return str|null Returns null if no value found
      */
-    public function getImageConfig($attribute, $type)
+    public function getImageConfig($attribute, $suffix)
     {
         if ($this->_imageConfig === null) {
             $config = Mage::getStoreConfig(self::CONFIG_PATH_PREFIX);
@@ -65,7 +65,7 @@ class Hackathon_SimpleImageHelper_Helper_Data extends Mage_Core_Helper_Data
             foreach ($config as $key => $value) {
                 //all image attributes will be prefixed with 'sih'
                 if (substr($key, 0,4) == 'sih_') {
-                    if (!$value) {//if is falsy convert to null
+                    if (!$value) {//if is false convert to null
                         $value = null;
                     }
                     $this->_imageConfig[$key] = $value;
