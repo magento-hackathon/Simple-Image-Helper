@@ -9,7 +9,8 @@ tools:
     external_code_coverage: false
     php_code_coverage:      false
     php_code_sniffer:
-    config: { standard: 'Zend' }
+    config: 
+        standard: 'Zend'
     php_changetracking: false
     php_sim: true
     php_cs_fixer: true
