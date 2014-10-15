@@ -12,4 +12,4 @@ To install this module either use modman or install by downloading all files and
 
 ## Support ##
 [![Build Status](https://scrutinizer-ci.com/g/magento-hackathon/Simple-Image-Helper/badges/build.png?b=master)](https://scrutinizer-ci.com/g/magento-hackathon/Simple-Image-Helper/build-status/master)
-[![Code Coverage](https://scrutinizer-ci.com/g/magento-hackathon/Simple-Image-Helper/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/magento-hackathon/Simple-Image-Helper/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/magento-hackathon/Simple-Image-Helper/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/magento-hackathon/Simple-Image-Helper/?branch=master)
