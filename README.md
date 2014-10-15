@@ -1,3 +1,5 @@
+[![Build Status](https://scrutinizer-ci.com/g/magento-hackathon/Simple-Image-Helper/badges/build.png?b=master)](https://scrutinizer-ci.com/g/magento-hackathon/Simple-Image-Helper/build-status/master)
+
 #Simple Image Helper#
 
 ## Overview ##
