@@ -1,5 +1,3 @@
-[![Build Status](https://scrutinizer-ci.com/g/magento-hackathon/Simple-Image-Helper/badges/build.png?b=master)](https://scrutinizer-ci.com/g/magento-hackathon/Simple-Image-Helper/build-status/master)
-
 #Simple Image Helper#
 
 ## Overview ##
@@ -13,3 +11,4 @@ To install this module either use modman or install by downloading all files and
 ## Todo ##
 
 ## Support ##
+[![Build Status](https://scrutinizer-ci.com/g/magento-hackathon/Simple-Image-Helper/badges/build.png?b=master)](https://scrutinizer-ci.com/g/magento-hackathon/Simple-Image-Helper/build-status/master)
